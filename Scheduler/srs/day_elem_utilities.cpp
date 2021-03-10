@@ -209,13 +209,14 @@ std::istream& operator >> (std::istream &in , school_day &school_day)
 	std::cin>>day_name;
 	school_day.setDay(day_name);
 	unsigned int num_day_elems;
-	std::cout<<"Enter the amount of day_elems \n";
+	std::cout<<"Enter the amount of courses \n";
 	std::cin>>num_day_elems;
-	day_elem *day_day_elems = new day_elem [num_day_elems];
-	std::cout<<"Enter the day_elems \n";
+	std::cout<<"Enter the courses \n";
 	for (unsigned int i=0; i<num_day_elems; ++i)
 	{
-		std::cin>>day_day_elems[i];
+		day_elem* course = new day_elem;
+		std::cin>>*course;
+		school_day.addElem(course->getName(),course->getStart(), course->getEnd());
 	}
 	return in;
 }
