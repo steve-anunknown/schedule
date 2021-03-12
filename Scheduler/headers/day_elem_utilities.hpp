@@ -35,6 +35,30 @@ public:
 	friend std::ostream& operator << (std::ostream &out, cl_time const& time);
 };
 
+class cal_date
+{
+private:
+	unsigned int cal_day;
+	unsigned int cal_month;
+public:
+	cal_date();
+	cal_date(unsigned int const& day, unsigned int const& month);
+
+	bool setCalDay(unsigned int const& day);
+	bool setCalMonth(unsigned int const& month);
+
+	unsigned int getCalDay() const;
+	unsigned int getCalMonth() const;
+
+	friend std::ostream & operator << (std::ostream &out, cal_date const& dateobj);
+	friend std::istream & operator >> (std::istream &in , cal_date &dateobj);
+
+	friend bool operator == (cal_date const& date_a , cal_date const& date_b);
+	friend bool operator != (cal_date const& date_a , cal_date const& date_b);
+	friend bool operator < (cal_date const& date_a , cal_date const& date_b);
+	friend bool operator > (cal_date const& date_a , cal_date const& date_b);
+};
+
 
 class day_elem
 {
