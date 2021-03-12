@@ -60,6 +60,41 @@ std::ostream& operator << (std::ostream &out , cl_time const& timeobj)
 	return out;
 }
 
+
+cal_date::cal_date(): cal_day(0) , cal_month(0) {}
+cal_date::cal_date(unsigned int const& day, unsigned int const& month): cal_day(day) , cal_month (month) {}
+
+bool cal_date::setCalDay(unsigned int const& day)
+{
+	this->cal_day = day;
+	return true;
+}
+bool cal_date::setCalMonth (unsigned int const& month)
+{
+	this->cal_month = month;
+	return true;
+}
+
+unsigned int cal_date::getCalDay() const { return this->cal_day ; }
+unsigned int cal_date::getCalMonth() const { return this->cal_month ; }
+
+std::ostream& operator << (std::ostream &out , cal_date const& dateobj)
+{
+	out<<dateobj.cal_day<<'/'<<dateobj.cal_month<<std::endl;
+	return out;
+}
+std::istream& operator >> (std::istream &in , cal_date & dateobj)
+{
+	in>>dateobj.cal_day>>dateobj.cal_month;
+	return in;
+}
+
+bool operator == (cal_date const& date_a , cal_date const& date_b) { return (date_a.cal_day==date_b.cal_day && date_a.cal_month==date_b.cal_month); }
+bool operator != (cal_date const& date_a , cal_date const& date_b) { return !(date_a==date_b); }
+bool operator < (cal_date const& date_a , cal_date const& date_b) { return (date_a.cal_month<date_b.cal_month || (date_a.cal_month==date_b.cal_month && date_a.cal_day < date_b.cal_day)); }
+bool operator > (cal_date const& date_a , cal_date const& date_b) { return (date_a!=date_b && !(date_a<date_b)); }
+
+
 day_elem::day_elem(): name("UNNAMED day_elem"), next_day_elem(nullptr) {}
 day_elem::day_elem(std::string const& name , cl_time begin , cl_time finish, day_elem* next)
 	: name(name) , start_time(begin) , end_time(finish) , next_day_elem(next) {}
