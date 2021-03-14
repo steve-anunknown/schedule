@@ -169,17 +169,18 @@ school_day::school_day(std::string const& name , day_elem *head): dname(name) , 
 school_day::~school_day()
 {
 	if (!lhead) return;
-	day_elem *temp = lhead->getNextElem();
+	day_elem* temp = lhead;
 	while (temp)
 	{
-		delete lhead;
-		lhead = temp;
-		temp = lhead->getNextElem();
+		day_elem* next = temp->getNextElem();
+		delete temp;
+		temp = next;
 	}
 }
 
 std::string school_day::getDay(void) const { return this->dname; }
 day_elem* school_day::getHead(void) const { return this->lhead; }
+school_day* school_day::getNextDay(void) const { return this->next_school_day; }
 
 bool school_day::setDay(std::string const& name)
 {
@@ -191,6 +192,13 @@ bool school_day::setHead(day_elem *head)
 	this->lhead = head ;
 	return true;
 }
+
+bool school_day::setNextDay(school_day* next_day)
+{
+	this->next_school_day = next_day;
+	return false;
+}
+
 bool school_day::addElem(std::string const& el_name , cl_time const& s_time, cl_time const& e_time )
 {
 	if (!this->lhead)
@@ -265,6 +273,82 @@ std::ostream& operator << (std::ostream &out, school_day &school_day)
 		temp=temp->getNextElem();
 	}
 	return out;
+}
+
+week_program::week_program() : school_day(nullptr) {}
+
+week_program::week_program(school_day* days): school_day(days) {}
+
+week_program::week_program(week_program const& program) : school_day(program.getDays()) {}
+
+week_program::~week_program()
+{
+	for (unsigned int i = 0; i < this->num_days; ++i)
+		delete this->days[i];
+}
+
+school_day week_program::getSchoolDay(unsigned int const& index) const
+{
+	if (index > sizeof(days) / sizeof(school_day)) return school_day();
+	else return this->days[index];
+}
+
+school_day week_program::getSchoolDay(std::string const& day_name) const
+{
+	school_day* temp = this->days;
+	while (temp && temp->getDay()!=day_name)
+	{
+		temp = temp->getNextDay();
+	}
+	if (temp) return *temp;
+	return school_day();
+}
+
+school_day* week_program::getSchoolDays() const
+{
+	return this->days;
+}
+
+bool week_program::addSchoolDay(school_day const& new_day)
+{
+	if (!days)
+	{
+		days = new school_day(new_day.getDay(), new_day.getHead(), new_day.getNextDay());
+		return true;
+	}
+	else
+	{
+		school_day* temp = days;
+		school_day* prev = temp;
+		while (temp)
+		{
+			prev = temp;
+			temp = temp->getNextDay();
+		}
+		school_day* new_sch_day = new school_day(new_day.getDay(), new_day.getHead(), new_day.getNextDay());
+		prev->setNextDay(new_sch_day);
+		return true;
+	}
+	return false;
+}
+
+bool week_program::remSchoolDay(school_day const& del_day)
+{
+	school_day* temp = this->days;
+	school_day* prev = temp;
+	while (temp && temp->getDay()!=del_day.getDay())
+	{
+		prev = temp;
+		temp = temp->getNextDay();
+	}
+	if (!temp) return false;
+	else
+	{
+		prev->setNextDay(temp->getNextDay());
+		delete temp;
+		return true;
+	}
+	return false;
 }
 
 
