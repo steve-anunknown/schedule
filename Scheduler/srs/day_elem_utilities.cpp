@@ -283,9 +283,10 @@ week_program::week_program(week_program const& program) : school_day(program.get
 
 week_program::~week_program()
 {
-	for (unsigned int i = 0; i < this->num_days; ++i)
-		delete this->days[i];
+	delete days;
 }
+
+school_day* week_program::getDays () const { return this->days; }
 
 school_day week_program::getSchoolDay(unsigned int const& index) const
 {
@@ -302,11 +303,6 @@ school_day week_program::getSchoolDay(std::string const& day_name) const
 	}
 	if (temp) return *temp;
 	return school_day();
-}
-
-school_day* week_program::getSchoolDays() const
-{
-	return this->days;
 }
 
 bool week_program::addSchoolDay(school_day const& new_day)
