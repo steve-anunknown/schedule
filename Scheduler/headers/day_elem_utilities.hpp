@@ -93,14 +93,17 @@ class school_day
 private:
 	std::string dname;
 	day_elem *lhead;
+	school_day* next_school_day;
 public:
 	school_day();
 	school_day(std::string const& name);
 	school_day(std::string const& name , day_elem *head);
+	school_day(std::string const& name , day_elem* head, school_day* next_day);
 	~school_day();
 
 	std::string getDay(void) const ;
 	day_elem* getHead(void) const ;
+	school_day* getNextDay(void) const;
 
 	bool setDay(std::string const& name);
 	bool setHead(day_elem *head);
@@ -109,6 +112,27 @@ public:
 	
 	friend std::istream& operator >> (std::istream &in , school_day &school_day);
 	friend std::ostream& operator << (std::ostream &out, school_day &school_day);
+};
+
+class week_program
+{
+private:
+	school_day* days;
+public:
+	week_program();
+	week_program(school_day* days);
+	week_program(week_program const& program);
+	~week_program();
+
+	school_day getSchoolDay(unsigned int const& index) const;
+	school_day getSchoolDay(std::string const& day_name) const;
+	
+	bool addSchoolDay(school_day const& new_day);
+	bool remSchoolDay(school_day const& del_day);
+
+	friend std::ostream& operator << (std::ostream& out, week_program const& programobj);
+	friend std::istream& operator >> (std::istream& in, week_program& programobj);
+
 };
 
 
