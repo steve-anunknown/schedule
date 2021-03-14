@@ -107,6 +107,7 @@ public:
 
 	bool setDay(std::string const& name);
 	bool setHead(day_elem *head);
+	bool setNextDay(school_day* next_day);
 	bool addElem(std::string const& el_name , cl_time const& s_time, cl_time const& e_time);
 	bool remElem(std::string const& el_name , cl_time const& s_time, cl_time const& e_time);
 	
