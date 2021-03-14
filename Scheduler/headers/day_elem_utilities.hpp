@@ -124,7 +124,8 @@ public:
 	week_program(school_day* days);
 	week_program(week_program const& program);
 	~week_program();
-
+	
+	school_day* getDays() const;
 	school_day getSchoolDay(unsigned int const& index) const;
 	school_day getSchoolDay(std::string const& day_name) const;
 	
